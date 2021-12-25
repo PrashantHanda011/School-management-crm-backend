@@ -9,6 +9,7 @@ const app = express();
 //for encrypted file
 dotenv.config({path:'./config.env'})
 
+
 //for database
 database();
 app.use(cors())
