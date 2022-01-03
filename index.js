@@ -6,22 +6,22 @@ import cors from 'cors'
 import auth from './Router/auth.js'
 const app = express();
 
-app.use(function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    next();
-  });
 //for encrypted file
 dotenv.config({path:'./config.env'})
 
+app.use(cookieParser());
+
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  next();
+});
 
 //for database
 database();
-app.use(cors())
+app.use(cors({credentials: true, origin: 'http://localhost:3000'}))
 const PORT = process.env.PORT || 8000;
 app.use(express.json());
 
-app.use(cookieParser());
 //router
 app.use(auth)
 
