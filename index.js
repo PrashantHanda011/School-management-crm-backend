@@ -18,7 +18,8 @@ app.use((req, res, next) => {
 
 //for database
 database();
-app.use(cors({credentials: true, origin: 'http://localhost:3000'}))
+app.use(cors({credentials: true, origin: ' https://school-management-sinox.herokuapp.com/'}))
+//http://localhost:3000 ||
 const PORT = process.env.PORT || 8000;
 app.use(express.json());
 
