@@ -4,7 +4,8 @@ import User from '../schema/userschema.js'
 const authenticate=async(req,res,next)=>{
     try {
         
-        const token = req.cookies.jwtoken
+        const token = req.cookies.jwttoken
+        console.log(token)
         const verifytoken = jwt.verify(token,process.env.SECRET_KEY)
 
         const rootuser = await User.findOne({_id:verifytoken._id,"tokens.token":token})
@@ -16,8 +17,8 @@ const authenticate=async(req,res,next)=>{
         next();
         
     } catch (err) {
-        return res.status(401).json(null)
         console.log(err)
+        return res.status(401).json(null)
     }
 
 }
