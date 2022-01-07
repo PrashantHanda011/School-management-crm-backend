@@ -2,9 +2,6 @@ import express from "express";
 import "../db/conn.js";
 import User from "../schema/userschema.js";
 import Bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
-import authenticate from "../middleware/authenticate.js";
-import session from "express-session";
 const router = express.Router();
 
 
@@ -66,19 +63,15 @@ router.post("/login", async (req, res) => {
   if (!email || !password) {
     return res.status(423).json({ alert: "please fill details" });
   }
-
   try {
     const exist = await User.findOne({ email: email });
     if (exist) {
       const match = Bcrypt.compareSync(password, exist.password);
-
-      let tokenverify = await exist.generateAuthToken();
-      console.log(`user token is = ${tokenverify}`);
-      
-      res.cookie('jwttoken', tokenverify, {expires: new Date(Date.now() + 9999999) , httpOnly:true,sameSite:"none",secure:true});
-
       if (match) {
-        return res.status(200).json({ message: "login successful" });
+        return res.status(200).json({
+          status: 'success',
+          tokendata:exist
+        });
       } else {
         return res.status(422).json({ message: "invalid credentials" });
       }
@@ -88,11 +81,6 @@ router.post("/login", async (req, res) => {
   } catch (err) {
     console.log(err);
   }
-});
-
-router.get("/studentdashboard", authenticate, (req, res) => {
-  console.log("hello dashboard");
-  res.send(req.rootuser);
 });
 
 router.get("/studentlist", async (req, res) => {
