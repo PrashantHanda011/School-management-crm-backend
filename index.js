@@ -12,17 +12,18 @@ dotenv.config({path:'./config.env'})
 app.use(cookieParser());
 
 
-//http://localhost:3000
+const localhost_url="http://localhost:3000"
+const netlify_url="https://school-management-sinox.netlify.app"
 
 app.use((req, res, next) => {
-   res.header('Access-Control-Allow-Origin', 'https://school-management-sinox.netlify.app');
+   res.header('Access-Control-Allow-Origin', {netlify_url, localhost_url});
    res.setHeader('Access-Control-Allow-Credentials',true);
    next();
  });
 
 //for database
 database();
-app.use(cors({ origin: '*',
+app.use(cors({ origin: {netlify_url, localhost_url},
 credentials: true,
 exposedHeaders: ["jwttoken"]}))
 // ||
