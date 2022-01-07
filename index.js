@@ -22,7 +22,7 @@ app.use((req, res, next) => {
 
 //for database
 database();
-app.use(cors({ origin: 'https://school-management-sinox.netlify.app',
+app.use(cors({ origin: '*',
 credentials: true,
 exposedHeaders: ["jwttoken"]}))
 // ||
