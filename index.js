@@ -1,9 +1,9 @@
+import auth from './Router/auth.js'
+import cors from 'cors'
 import express from 'express';
 import dotenv from 'dotenv'
 import database from './db/conn.js'
 import cookieParser from 'cookie-parser';
-import cors from 'cors'
-import auth from './Router/auth.js'
 const app = express();
 
 //for encrypted file
