@@ -76,7 +76,7 @@ router.post("/login", async (req, res) => {
       let tokenverify = await exist.generateAuthToken();
       console.log(`user token is = ${tokenverify}`);
       
-      res.cookie('jwttoken', tokenverify, {expires: new Date(Date.now() + 9999999) , httpOnly:true});
+      res.cookie('jwttoken', tokenverify, {expires: new Date(Date.now() + 9999999) , httpOnly:true},{cookie_flags: 'SameSite=None;Secure'});
 
       if (match) {
         return res.status(200).json({ message: "login successful" });
