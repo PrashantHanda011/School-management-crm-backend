@@ -11,17 +11,17 @@ dotenv.config({path:'./config.env'})
 
 app.use(cookieParser());
 
-
-//important headers for successfull header
  app.use((req, res, next) => {
    res.header('Access-Control-Allow-Origin', 'https://school-management-sinox.netlify.app');
    res.setHeader('Access-Control-Allow-Credentials',true);
    next();
-});
+ });
 
 //for database
 database();
-app.use(cors({ origin: 'https://school-management-sinox.netlify.app'}))
+app.use(cors({ origin: 'https://school-management-sinox.netlify.app',
+credentials: true,
+exposedHeaders: ["set-cookie"]}))
 // ||
 const PORT = process.env.PORT || 8000;
 app.use(express.json());
