@@ -4,10 +4,9 @@ import User from "../schema/userschema.js";
 import Bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import authenticate from "../middleware/authenticate.js";
-
+import session from "express-session";
 const router = express.Router();
 
-//user authentication
 
 router.post("/studentadd", async (req, res) => {
   const {fname,lname,sid,email,password,cpassword,gender,dob,Class,religion,admissiondate,phone,admissionnum,section,simg,fathername,fatheroccupation,fatherphone,fatheremail,mothername,motheroccupation,motherphone,motheremail,address,
@@ -63,7 +62,7 @@ router.post("/studentadd", async (req, res) => {
 
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;
-
+  
   if (!email || !password) {
     return res.status(423).json({ alert: "please fill details" });
   }
@@ -76,7 +75,7 @@ router.post("/login", async (req, res) => {
       let tokenverify = await exist.generateAuthToken();
       console.log(`user token is = ${tokenverify}`);
       
-      res.cookie('jwttoken', tokenverify, {expires: new Date(Date.now() + 9999999) , httpOnly:true},{cookie_flags: 'SameSite=None;Secure'});
+      res.cookie('jwttoken', tokenverify, {expires: new Date(Date.now() + 9999999) , httpOnly:true,sameSite:"none",secure:true});
 
       if (match) {
         return res.status(200).json({ message: "login successful" });
