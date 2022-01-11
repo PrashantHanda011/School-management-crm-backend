@@ -60,7 +60,6 @@ const postschema = new mongoose.Schema({
   },
   simg: {
     type: String,
-    required: true,
   },
   fathername: {
     type: String,
@@ -68,15 +67,15 @@ const postschema = new mongoose.Schema({
   },
   fatheroccupation: {
     type: String,
-    required: true,
+    
   },
   fatherphone: {
     type: Number,
-    required: true,
+    
   },
   fatheremail: {
     type: String,
-    required: true,
+
   },
   mothername: {
     type: String,
@@ -84,15 +83,15 @@ const postschema = new mongoose.Schema({
   },
   motheroccupation: {
     type: String,
-    required: true,
+    
   },
   motherphone: {
     type: Number,
-    required: true,
+   
   },
   motheremail: {
     type: String,
-    required: true,
+    
   },
   address:{
     type:String,

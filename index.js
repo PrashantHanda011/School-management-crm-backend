@@ -32,7 +32,6 @@ app.use(express.json());
 
 //router
 app.use(auth)
-
 //listen
 app.listen(PORT,()=>{
     console.log(`listening to port ${PORT}`)

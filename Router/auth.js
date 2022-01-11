@@ -1,15 +1,14 @@
 import express from "express";
 import "../db/conn.js";
-import User from "../schema/userschema.js";
 import Bcrypt from "bcryptjs";
+import multer from "multer";
+import User from '../schema/userschema.js'
 const router = express.Router();
-
 
 router.post("/studentadd", async (req, res) => {
   const {fname,lname,sid,email,password,cpassword,gender,dob,Class,religion,admissiondate,phone,admissionnum,section,simg,fathername,fatheroccupation,fatherphone,fatheremail,mothername,motheroccupation,motherphone,motheremail,address,
   } = req.body;
-
-  if (!fname || !lname ||!sid ||!email ||!password ||!cpassword ||!gender ||!dob ||!Class ||!religion ||!admissiondate ||!phone ||!admissionnum ||!section ||!simg ||!fathername ||!fatheroccupation ||!fatherphone ||!fatheremail ||!mothername ||!motheroccupation ||!motherphone ||!motheremail ||!address) {
+  if (!fname || !lname ||!sid ||!email ||!password ||!cpassword ||!gender ||!dob ||!Class ||!admissiondate ||!phone ||!admissionnum ||!section ||!fathername ) {
     return res.status(422).json({ error: "fill the details" });
   }
   try {
@@ -46,8 +45,7 @@ router.post("/studentadd", async (req, res) => {
         address,
       });
 
-      await user.save();
-
+    await user.save();   
       return res.status(200).json({ message: "succefull registered" });
     }
   } catch (err) {
