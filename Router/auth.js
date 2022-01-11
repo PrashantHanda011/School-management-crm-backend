@@ -126,4 +126,7 @@ router.delete("/studentdelete",async (req,res)=>{
 })
 
 
+router.post
+
+
 export default router;
