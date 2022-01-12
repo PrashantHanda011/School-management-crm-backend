@@ -14,7 +14,8 @@ app.use(cookieParser());
 
 
 const localhost_url="http://localhost:3000"
-const netlify_url="https://school-management-sinox.netlify.app"
+const netlify_url='https://school-management-sinox.netlify.app'
+
 
 app.use((req, res, next) => {
    res.header('Access-Control-Allow-Origin', {netlify_url, localhost_url});
