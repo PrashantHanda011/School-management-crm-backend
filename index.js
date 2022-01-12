@@ -1,4 +1,5 @@
 import auth from './Router/auth.js'
+import admin from './Router/admin.js'
 import cors from 'cors'
 import express from 'express';
 import dotenv from 'dotenv'
@@ -32,6 +33,7 @@ app.use(express.json());
 
 //router
 app.use(auth)
+app.use(admin)
 //listen
 app.listen(PORT,()=>{
     console.log(`listening to port ${PORT}`)

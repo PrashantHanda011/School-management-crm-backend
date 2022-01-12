@@ -1,8 +1,7 @@
 import express from "express";
 import "../db/conn.js";
 import Bcrypt from "bcryptjs";
-import multer from "multer";
-import User from '../schema/userschema.js'
+import User from '../schema/studentschema.js'
 const router = express.Router();
 
 router.post("/studentadd", async (req, res) => {
@@ -125,8 +124,6 @@ router.delete("/studentdelete",async (req,res)=>{
   }
 })
 
-
-router.post
 
 
 export default router;
