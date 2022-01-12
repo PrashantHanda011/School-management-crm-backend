@@ -5,6 +5,7 @@ import express from 'express';
 import dotenv from 'dotenv'
 import database from './db/conn.js'
 import cookieParser from 'cookie-parser';
+
 const app = express();
 
 //for encrypted file
@@ -35,8 +36,10 @@ const PORT = process.env.PORT || 8000;
 app.use(express.json());
 
 //router
-app.use(auth)
+
 app.use(admin)
+app.use(auth)
+
 //listen
 app.listen(PORT,()=>{
     console.log(`listening to port ${PORT}`)
