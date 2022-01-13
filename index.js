@@ -21,7 +21,7 @@ app.use(cors({origin: origins,
   credentials: true}))
 
 app.use((req, res, next) => {
-   res.header('Access-Control-Allow-Origin', {netlify_url,localhost_url});
+   res.header('Access-Control-Allow-Origin', origins);
    res.setHeader('Access-Control-Allow-Credentials',true);
    next();
   });
