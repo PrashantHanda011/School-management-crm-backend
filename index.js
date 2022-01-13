@@ -13,11 +13,15 @@ dotenv.config({path:'./config.env'})
 app.use(cookieParser());
 
 
-const localhost_url="http://localhost:3000"
-const netlify_url="https://school-management-sinox.netlify.app"
+  var corsOptions = {
+    origin: ["http://localhost:3000","https://school-management-sinox.netlify.app"],
+    optionsSuccessStatus: 200 // For legacy browser support
+    }
+    
+app.use(cors(corsOptions)); 
+    
 
-app.use(cors({origin: {netlify_url,localhost_url},
-  credentials: true}))
+
 
 app.use((req, res, next) => {
    res.header('Access-Control-Allow-Origin', {netlify_url,localhost_url});
