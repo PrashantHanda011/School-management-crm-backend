@@ -19,7 +19,6 @@ const netlify_url="https://school-management-sinox.netlify.app"
 app.use(cors({origin: {netlify_url,localhost_url},
   credentials: true}))
 
-app.UseCors(CorsOptions.AllowAll);
 app.use((req, res, next) => {
    res.header('Access-Control-Allow-Origin', {netlify_url,localhost_url});
    res.setHeader('Access-Control-Allow-Credentials',true);
