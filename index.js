@@ -13,7 +13,7 @@ dotenv.config({path:'./config.env'})
 app.use(cookieParser());
 
 
-var allowedDomains = ['http://localhost:3000', 'https://school-management-sinox.netlify.app'];
+var allowedDomains = [ 'https://school-management-sinox.netlify.app'];
 app.use(cors({
   origin: function (origin, callback) {
     // bypass the requests with no origin (like curl requests, mobile apps, etc )
@@ -29,7 +29,7 @@ app.use(cors({
 
 
 app.use((req, res, next) => {
-   res.header('Access-Control-Allow-Origin', allowedDomains);
+   res.header('Access-Control-Allow-Origin', "*");
    next();
   });
 
