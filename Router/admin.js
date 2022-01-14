@@ -3,6 +3,7 @@ import "../db/conn.js";
 import Admin from "../schema/adminschema.js";
 import Bcrypt from 'bcryptjs'
 import Subject from "../schema/subjectschema.js";
+import Teacher from "../schema/teacherschema.js";
 const router = express.Router();
 
 //Admin Signup
@@ -96,6 +97,7 @@ router.post("/adminlogin", async (req, res) => {
       console.log(err);
     }
   });
+
   router.get('/subjectedit/:id',async(req,res)=>{
     try{
     const data = await Subject.findById(req.params.id);
@@ -109,6 +111,64 @@ router.post("/adminlogin", async (req, res) => {
   router.put("/subjectedit/:id", async (req, res) => {
     try {
       await Subject.findByIdAndUpdate(req.params.id, { $set: req.body }); //$push $set use toupdate the 
+      return res.status(200).json({message:"updated"})   
+      } catch (err) {
+        console.log(err);
+   }
+  }
+  );
+  
+
+//Teacher 
+
+
+router.post("/admindashboard/teacheradd", async (req, res) => {
+    const { tid, tname,subject, gender, dob , mobile , joiningdate , qualification , experience , email , password , cpassword,Class , address } = req.body;
+
+    if ( !email|| !tid || !password || !cpassword || !mobile || !tname) {
+      return res.status(422).json({ error: "fill the details" });
+    }
+    try {
+      const userExist = await Teacher.findOne({ email: email });
+      if (userExist) {
+        return res.status(423).json({ message: "user exist" });
+      } else if (password != cpassword) {
+        return res.status(424).json({ message: "Password didn't matched " });
+      } else {
+        const teacher = new Teacher({
+          tid, tname,subject, gender, dob , mobile , joiningdate , qualification , experience , email , password , cpassword , address , Class
+         });
+  
+        await teacher.save();
+        return res.status(200).json({ message: "succefull registered" });
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  });
+  
+  router.get("/admindashboard/teacherslist", async (req, res) => {
+    try {
+      const data = await Teacher.find();
+      res.send(data) ;
+    } catch (err) {
+      console.log(err);
+    }
+  });
+
+  router.get('/admindashboard/teacheredit/:id',async(req,res)=>{
+    try{
+    const data = await Teacher.findById(req.params.id);
+  
+    res.send(data);
+    }catch(err){
+      console.log(err)
+    }
+  })
+
+  router.put("/admindashboard/teacheredit/:id", async (req, res) => {
+    try {
+      await Teacher.findByIdAndUpdate(req.params.id, { $set: req.body }); //$push $set use toupdate the 
       return res.status(200).json({message:"updated"})   
       } catch (err) {
         console.log(err);
