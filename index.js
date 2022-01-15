@@ -3,6 +3,7 @@ import cors from 'cors'
 import express from 'express';
 import dotenv from 'dotenv'
 import database from './db/conn.js'
+import teacher from './Router/teacher.js'
 import cookieParser from 'cookie-parser';
 import admin from './Router/admin.js'
 const app = express();
@@ -35,6 +36,7 @@ app.use(express.json());
 
 app.use(admin)
 app.use(auth)
+app.use(teacher)
 
 //listen
 app.listen(PORT,()=>{

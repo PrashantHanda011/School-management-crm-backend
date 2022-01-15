@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-
+import bcrypt from 'bcryptjs'
 const teacherschema = new mongoose.Schema({
     tid:{
         type:String,
@@ -50,7 +50,18 @@ const teacherschema = new mongoose.Schema({
     },
 
     })
-      
+  
+    teacherschema.pre('save', async function(next){
+
+      if(this.isModified('password')){
+        var salt = bcrypt.genSaltSync(12)
+        this.password = bcrypt.hashSync(this.password,salt);
+        this.cpassword = bcrypt.hashSync(this.cpassword,salt);
+      }
+      next();
+    });
+
+
   const Teacher = mongoose.model("TEACHER", teacherschema);
   export default Teacher;
   
