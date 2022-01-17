@@ -113,11 +113,10 @@ router.get('/studentedit/:id',async(req,res)=>{
 }
 );
 
-router.delete("studentdelete/:id",async (req,res)=>{
+router.delete("/studentdelete/:id",async (req,res)=>{
   try {
       await User.findByIdAndRemove(req.params.id);
         return res.status(200).json({message:"deleted"});    
-    
   } catch (err) {
         console.log(err);    
   }
