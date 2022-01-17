@@ -118,6 +118,18 @@ router.post("/adminlogin", async (req, res) => {
   }
   );
   
+  router.delete("/subjectdelete/:id",async (req,res)=>{
+    try {
+           await Subject.findByIdAndRemove(req.params.id);
+         console.log("deleted");
+          return res.status(200).json({message:"deleted"});    
+      
+    } catch (err) {
+          console.log(err);    
+    }
+  })
+  
+
 
 //Teacher 
 
@@ -175,6 +187,14 @@ router.post("/admindashboard/teacheradd", async (req, res) => {
    }
   }
   );
-  
+  router.delete("/admindashboard/teacherdelete/:id",async (req,res)=>{
+    try {
+        await Teacher.findByIdAndRemove(req.params.id);
+          return res.status(200).json({message:"deleted"});    
+      
+    } catch (err) {
+          console.log(err);    
+    }
+  })
 
   export default router;
