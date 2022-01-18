@@ -97,12 +97,20 @@ const postschema = new mongoose.Schema({
     type:String,
     required:true
   },
-  tokens:[{
-    token:{
-      type:String,
-      required:true
-    }
-  }]
+  totalamount:{
+    type:Number
+  },
+  submitamount:{
+    type:Number
+  },
+  feedate:{
+    type:Date
+  },
+  feestatus:{
+    type:Boolean,
+    default:false
+
+  }
 });
 
 //pasword hash

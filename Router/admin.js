@@ -2,6 +2,7 @@ import express from "express";
 import "../db/conn.js";
 import Admin from "../schema/adminschema.js";
 import Bcrypt from 'bcryptjs'
+import User from "../schema/studentschema.js";
 import Subject from "../schema/subjectschema.js";
 import Teacher from "../schema/teacherschema.js";
 const router = express.Router();
@@ -196,5 +197,21 @@ router.post("/admindashboard/teacheradd", async (req, res) => {
           console.log(err);    
     }
   })
+
+  router.put("/admindashboard/account/addfees", async (req, res) => {
+    try {
+      const {sid}=req.body;
+      const match= await User.findOneAndUpdate({sid:sid},{ $set: req.body })
+      if(!match){
+        return res.status(201).json({message:"student doesn't exist"})    
+      }
+      return res.status(200).json({message:"updated"})    
+
+      } catch (err) {
+        console.log(err);
+   }
+  }
+  );
+
 
   export default router;

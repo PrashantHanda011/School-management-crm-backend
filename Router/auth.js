@@ -6,8 +6,7 @@ import User from '../schema/studentschema.js'
 const router = express.Router();
 
 router.post("/studentadd", async (req, res) => {
-  const {fname,lname,sid,email,password,cpassword,gender,dob,Class,religion,admissiondate,phone,admissionnum,section,simg,fathername,fatheroccupation,fatherphone,fatheremail,mothername,motheroccupation,motherphone,motheremail,address,
-  } = req.body;
+  const {fname,lname,sid,email,password,cpassword,gender,dob,Class,religion,admissiondate,phone,admissionnum,section,simg,fathername,fatheroccupation,fatherphone,fatheremail,mothername,motheroccupation,motherphone,motheremail,address,totalamount,submitamount,feedate,feestatus} = req.body;
   if (!fname || !lname ||!sid ||!email ||!password ||!cpassword ||!gender ||!dob ||!Class ||!admissiondate ||!phone ||!admissionnum ||!section ||!fathername ) {
     return res.status(422).json({ error: "fill the details" });
   }
@@ -43,6 +42,10 @@ router.post("/studentadd", async (req, res) => {
         motherphone,
         motheremail,
         address,
+        totalamount,
+        submitamount,
+        feedate,
+        feestatus
       });
 
     await user.save();   
