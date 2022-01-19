@@ -136,7 +136,7 @@ router.post("/adminlogin", async (req, res) => {
 
 
 router.post("/admindashboard/teacheradd", async (req, res) => {
-    const { tid, tname,subject, gender, dob , mobile , joiningdate , qualification , experience , email , password , cpassword,Class , address } = req.body;
+    const { tid, tname,subject, gender, dob , mobile , joiningdate , qualification , experience , email , password , cpassword,Class , address ,salary,salarydate , salarystatus } = req.body;
 
     if ( !email|| !tid || !password || !cpassword || !mobile || !tname) {
       return res.status(422).json({ error: "fill the details" });
@@ -149,7 +149,7 @@ router.post("/admindashboard/teacheradd", async (req, res) => {
         return res.status(424).json({ message: "Password didn't matched " });
       } else {
         const teacher = new Teacher({
-          tid, tname,subject, gender, dob , mobile , joiningdate , qualification , experience , email , password , cpassword , address , Class
+          tid, tname,subject, gender, dob , mobile , joiningdate , qualification , experience , email , password , cpassword , address , Class,salary ,salarydate, salarystatus
          });
   
         await teacher.save();
@@ -204,6 +204,21 @@ router.post("/admindashboard/teacheradd", async (req, res) => {
       const match= await User.findOneAndUpdate({sid:sid},{ $set: req.body })
       if(!match){
         return res.status(201).json({message:"student doesn't exist"})    
+      }
+      return res.status(200).json({message:"updated"})    
+
+      } catch (err) {
+        console.log(err);
+   }
+  }
+  );
+
+  router.put("/admindashboard/account/addsalary", async (req, res) => {
+    try {
+      const {tid}=req.body;
+      const match= await Teacher.findOneAndUpdate({tid:tid},{ $set: req.body })
+      if(!match){
+        return res.status(201).json({message:"Teacher doesn't exist"})    
       }
       return res.status(200).json({message:"updated"})    
 

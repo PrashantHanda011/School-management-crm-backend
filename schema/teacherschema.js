@@ -48,6 +48,15 @@ const teacherschema = new mongoose.Schema({
     address: {
       type: String
     },
+    salary: {
+      type: Number
+    },
+    salarydate:{
+      type:Date
+    },
+    salarystatus: {
+      type: Boolean
+    },
 
     })
   
