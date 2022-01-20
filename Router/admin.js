@@ -5,6 +5,8 @@ import Bcrypt from 'bcryptjs'
 import User from "../schema/studentschema.js";
 import Subject from "../schema/subjectschema.js";
 import Teacher from "../schema/teacherschema.js";
+import Class from "../schema/classschema.js";
+
 const router = express.Router();
 
 //Admin Signup
@@ -62,6 +64,10 @@ router.post("/adminlogin", async (req, res) => {
       console.log(err);
     }
   });
+
+
+
+
 
   //subject add
   
@@ -222,6 +228,63 @@ router.post("/admindashboard/teacheradd", async (req, res) => {
       }
       return res.status(200).json({message:"updated"})    
 
+      } catch (err) {
+        console.log(err);
+   }
+  }
+  );
+
+
+
+  // Class
+
+  router.post("/admindashboard/classes/classadd", async (req, res) => {
+    const {classid, classn,section , classteacher , noofstudent } = req.body;
+    
+    if (!classid || !classn  || !section) {
+      return res.status(422).json({ error: "fill the details" });
+    }
+    try {
+      const userExist = await Class.findOne({ classid : classid });
+      if (userExist) {
+        return res.status(423).json({ message: "Class exist" });
+      } else {
+        const nclass = new Class({
+          classid, classn,section, classteacher , noofstudent
+         });
+  
+        await nclass.save();
+        return res.status(200).json({ message: "Class Added successfully " });
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  });
+
+  router.get("/admindashboard/classes", async (req, res) => {
+    try {
+      const data = await Class.find();
+      res.send(data) ;
+    } catch (err) {
+      console.log(err);
+    }
+  });
+
+
+  router.get('/admindashboard/classes/classedit/:id',async(req,res)=>{
+    try{
+    const data = await Class.findById(req.params.id);
+  
+    res.send(data);
+    }catch(err){
+      console.log(err)
+    }
+  })
+
+  router.put("/admindashboard/classes/classedit/:id", async (req, res) => {
+    try {
+      await Class.findByIdAndUpdate(req.params.id, { $set: req.body }); //$push $set use toupdate the 
+      return res.status(200).json({message:"updated"})   
       } catch (err) {
         console.log(err);
    }
