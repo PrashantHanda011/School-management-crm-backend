@@ -6,7 +6,7 @@ import User from "../schema/studentschema.js";
 import Subject from "../schema/subjectschema.js";
 import Teacher from "../schema/teacherschema.js";
 import Class from "../schema/classschema.js";
-
+import Expense from "../schema/Expenseschema.js";
 const router = express.Router();
 
 //Admin Signup
@@ -236,6 +236,42 @@ router.post("/admindashboard/teacheradd", async (req, res) => {
 
 
 
+
+  // Expense
+
+router.post("/admindashboard/account/addexpense", async (req, res) => {
+  const {expenseid, department,itemname , itemqty , expenseamt , source,dateop } = req.body;
+  
+  if (!expenseid || !department  || !itemname || !itemqty || !expenseamt || !source || !dateop) {
+    return res.status(422).json({ error: "fill the details" });
+  }
+  try {
+    const userExist = await Expense.findOne({ expenseid : expenseid });
+    if (userExist) {
+      return res.status(423).json({ message: "Expense exist" });
+    } else {
+      const expense = new Expense({
+        expenseid, department,itemname , itemqty , expenseamt , source,dateop 
+       });
+
+      await expense.save();
+      return res.status(200).json({ message: "Expense Added successfully " });
+    }
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+
+router.get("/admindashboard/account/expensecollection", async (req, res) => {
+  try {
+    const data = await Expense.find();
+    res.send(data) ;
+  } catch (err) {
+    console.log(err);
+  }
+});
+
   // Class
 
   router.post("/admindashboard/classes/classadd", async (req, res) => {
@@ -270,6 +306,16 @@ router.post("/admindashboard/teacheradd", async (req, res) => {
     }
   });
 
+  router.delete("/admindashboard/classes/classdelete/:id",async (req,res)=>{
+    try {
+        await Class.findByIdAndRemove(req.params.id);
+          return res.status(200).json({message:"deleted"});    
+      
+    } catch (err) {
+          console.log(err);    
+    }
+  })
+
 
   router.get('/admindashboard/classes/classedit/:id',async(req,res)=>{
     try{
@@ -290,6 +336,8 @@ router.post("/admindashboard/teacheradd", async (req, res) => {
    }
   }
   );
+
+
 
 
   export default router;
