@@ -7,6 +7,7 @@ import Subject from "../schema/subjectschema.js";
 import Teacher from "../schema/teacherschema.js";
 import Class from "../schema/classschema.js";
 import Expense from "../schema/expenseschema.js";
+import Holiday from "../schema/holidayschema.js";
 const router = express.Router();
 
 //Admin Signup
@@ -194,6 +195,7 @@ router.post("/admindashboard/teacheradd", async (req, res) => {
    }
   }
   );
+
   router.delete("/admindashboard/teacherdelete/:id",async (req,res)=>{
     try {
         await Teacher.findByIdAndRemove(req.params.id);
@@ -338,6 +340,71 @@ router.get("/admindashboard/account/expensecollection", async (req, res) => {
   );
 
 
+
+  // Holiday
+
+  router.post("/admindashboard/holidayadd", async (req, res) => {
+    const {holidayid, holidayname,holidaytype , sdate ,  edate } = req.body;
+    
+    if (!holidayid || !holidayname || !sdate) {
+      return res.status(422).json({ error: "fill the details" });
+    }
+    try {
+      const userExist = await Holiday.findOne({ holidayid : holidayid });
+      if (userExist) {
+        return res.status(423).json({ message: "Class exist" });
+      } else {
+        const holiday = new Holiday({
+          holidayid, holidayname,holidaytype , sdate ,  edate
+         });
+  
+        await holiday.save();
+        return res.status(200).json({ message: "Class Added successfully " });
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  });
+
+  router.get("/admindashboard/holidayadd", async (req, res) => {
+    try {
+      const data = await Holiday.find();
+      res.send(data) ;
+    } catch (err) {
+      console.log(err);
+    }
+  });
+
+  router.get('/admindashboard/holidayedit/:id',async(req,res)=>{
+    try{
+    const data = await Holiday.findById(req.params.id);
+  
+    res.send(data);
+    }catch(err){
+      console.log(err)
+    }
+  })
+
+  router.put("/admindashboard/holidayedit/:id", async (req, res) => {
+    try {
+      await Holiday.findByIdAndUpdate(req.params.id, { $set: req.body }); //$push $set use toupdate the 
+      return res.status(200).json({message:"updated"})   
+      } catch (err) {
+        console.log(err);
+   }
+  }
+  );
+  
+  
+  router.delete("/admindashboard/holidaydelete/:id",async (req,res)=>{
+    try {
+        await Holiday.findByIdAndRemove(req.params.id);
+          return res.status(200).json({message:"deleted"});    
+      
+    } catch (err) {
+          console.log(err);    
+    }
+  })
 
 
   export default router;
