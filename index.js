@@ -13,8 +13,8 @@ dotenv.config({path:'./config.env'})
 
 app.use(cookieParser());
 
-const origins = "https://school-management-sinox.netlify.app"
 //const origins = "http://localhost:3000"
+const origins = "https://school-management-sinox.netlify.app"
 
 app.use(cors({origin: origins,
   credentials: true}))
@@ -40,4 +40,4 @@ app.use(teacher)
 //listen
 app.listen(PORT,()=>{
     console.log(`listening to port ${PORT}`)
-})
+});
