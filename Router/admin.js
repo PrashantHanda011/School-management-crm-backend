@@ -6,7 +6,7 @@ import User from "../schema/studentschema.js";
 import Subject from "../schema/subjectschema.js";
 import Teacher from "../schema/teacherschema.js";
 import Class from "../schema/classschema.js";
-import Expense from "../schema/Expenseschema.js";
+import Expense from "../schema/expenseschema.js";
 const router = express.Router();
 
 //Admin Signup
