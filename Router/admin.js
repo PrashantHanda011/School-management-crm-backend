@@ -8,6 +8,7 @@ import Teacher from "../schema/teacherschema.js";
 import Class from "../schema/classschema.js";
 import Expense from "../schema/expenseschema.js";
 import Holiday from "../schema/holidayschema.js";
+import Fee from "../schema/feeschema.js";
 const router = express.Router();
 
 //Admin Signup
@@ -366,7 +367,7 @@ router.get("/admindashboard/account/expensecollection", async (req, res) => {
     }
   });
 
-  router.get("/admindashboard/holidayadd", async (req, res) => {
+  router.get("/admindashboard/holidaylist", async (req, res) => {
     try {
       const data = await Holiday.find();
       res.send(data) ;
@@ -399,6 +400,72 @@ router.get("/admindashboard/account/expensecollection", async (req, res) => {
   router.delete("/admindashboard/holidaydelete/:id",async (req,res)=>{
     try {
         await Holiday.findByIdAndRemove(req.params.id);
+          return res.status(200).json({message:"deleted"});    
+      
+    } catch (err) {
+          console.log(err);    
+    }
+  })
+
+
+  // fee
+
+  router.post("/admindashboard/feeadd", async (req, res) => {
+    const {feeid, feetype,Class , feeamt ,feesdate,  feeedate } = req.body;
+    
+    if (!feeid || !feetype || !feeamt || !feesdate) {
+      return res.status(422).json({ error: "fill the details" });
+    }
+    try {
+      const feeExist = await Fee.findOne({ feeid : feeid });
+      if (feeExist) {
+        return res.status(423).json({ message: "Fee already exist" });
+      } else {
+        const fee = new Fee({
+          feeid, feetype, Class , feeamt ,  feesdate,feeedate
+         });
+  
+        await fee.save();
+        return res.status(200).json({ message: "Fee Added successfully " });
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  });
+
+  router.get("/admindashboard/feelist", async (req, res) => {
+    try {
+      const data = await Fee.find();
+      res.send(data) ;
+    } catch (err) {
+      console.log(err);
+    }
+  });
+
+  router.get('/admindashboard/feeedit/:id',async(req,res)=>{
+    try{
+    const data = await Fee.findById(req.params.id);
+  
+    res.send(data);
+    }catch(err){
+      console.log(err)
+    }
+  })
+
+  router.put("/admindashboard/feeedit/:id", async (req, res) => {
+    try {
+      await Fee.findByIdAndUpdate(req.params.id, { $set: req.body }); //$push $set use toupdate the 
+      return res.status(200).json({message:"updated"})   
+      } catch (err) {
+        console.log(err);
+   }
+  }
+  );
+  
+  
+  router.delete("/admindashboard/feedelete/:id",async (req,res)=>{
+    try {
+        await Fee.findByIdAndRemove(req.params.id);
           return res.status(200).json({message:"deleted"});    
       
     } catch (err) {
