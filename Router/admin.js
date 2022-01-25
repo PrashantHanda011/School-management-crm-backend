@@ -9,6 +9,7 @@ import Class from "../schema/classschema.js";
 import Expense from "../schema/expenseschema.js";
 import Holiday from "../schema/holidayschema.js";
 import Fee from "../schema/feeschema.js";
+import Library from "../schema/libraryschema.js";
 const router = express.Router();
 
 //Admin Signup
@@ -473,5 +474,71 @@ router.get("/admindashboard/account/expensecollection", async (req, res) => {
     }
   })
 
+
+
+  // Library
+
+  router.post("/admindashboard/bookadd", async (req, res) => {
+    const {bookid,bookname, booktype,booklang,author,Class ,stock } = req.body;
+    
+    if (!bookid  || !booklang || !Class || !stock ){
+      return res.status(422).json({ error: "fill the details" });
+    }
+    try {
+      const bookExist = await Library.findOne({ bookid : bookid });
+      if (bookExist) {
+        return res.status(423).json({ message: "book already exist" });
+      } else {
+        const book = new Library({
+          bookid,bookname, booktype,booklang,author,Class,stock
+         });
+  
+        await book.save();
+        return res.status(200).json({ message: "book Added successfully " });
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  });
+
+  
+  router.get("/admindashboard/booklist", async (req, res) => {
+    try {
+      const data = await Library.find();
+      res.send(data) ;
+    } catch (err) {
+      console.log(err);
+    }
+  });
+
+  router.delete("/admindashboard/bookdelete/:id",async (req,res)=>{
+    try {
+        await Library.findByIdAndRemove(req.params.id);
+          return res.status(200).json({message:"deleted"});    
+      
+    } catch (err) {
+          console.log(err);    
+    }
+  })
+
+  router.get('/admindashboard/bookedit/:id',async(req,res)=>{
+    try{
+    const data = await Library.findById(req.params.id);
+  
+    res.send(data);
+    }catch(err){
+      console.log(err)
+    }
+  })
+
+  router.put("/admindashboard/bookedit/:id", async (req, res) => {
+    try {
+      await Library.findByIdAndUpdate(req.params.id, { $set: req.body }); //$push $set use toupdate the 
+      return res.status(200).json({message:"updated"})   
+      } catch (err) {
+        console.log(err);
+   }
+  }
+  );
 
   export default router;
