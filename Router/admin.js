@@ -10,6 +10,7 @@ import Expense from "../schema/expenseschema.js";
 import Holiday from "../schema/holidayschema.js";
 import Fee from "../schema/feeschema.js";
 import Library from "../schema/libraryschema.js";
+import Exam from "../schema/examschema.js";
 const router = express.Router();
 
 //Admin Signup
@@ -70,6 +71,14 @@ router.post("/adminlogin", async (req, res) => {
 
 
 
+  router.get("/adminlist", async (req, res) => {
+    try {
+      const data = await Admin.find();
+      res.send(data) ;
+    } catch (err) {
+      console.log(err);
+    }
+  });
 
 
   //subject add
@@ -540,5 +549,73 @@ router.get("/admindashboard/account/expensecollection", async (req, res) => {
    }
   }
   );
+
+
+  // Exam
+
+  router.post("/admindashboard/examadd", async (req, res) => {
+    const {examid,examtype,Class, section,subject,stime,etime ,examdate} = req.body;
+    
+    if (!examid || !examtype  || !Class || !section || !subject || !stime || !etime || !examdate ){
+      return res.status(422).json({ error: "fill the details" });
+    }
+    try {
+      const examExist = await Exam.findOne({ examid : examid });
+      if (examExist) {
+        return res.status(423).json({ message: "Exam already exist" });
+      } else {
+        const exam = new Exam({
+          examid,examtype,Class, section,subject,stime,etime ,examdate
+         });
+  
+        await exam.save();
+        return res.status(200).json({ message: "exam Added successfully " });
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  });
+
+  router.get("/admindashboard/examlist", async (req, res) => {
+    try {
+      const data = await Exam.find();
+      res.send(data) ;
+    } catch (err) {
+      console.log(err);
+    }
+  });
+
+
+  router.get('/admindashboard/examedit/:id',async(req,res)=>{
+    try{
+    const data = await Exam.findById(req.params.id);
+  
+    res.send(data);
+    }catch(err){
+      console.log(err)
+    }
+  })
+
+  router.put("/admindashboard/examedit/:id", async (req, res) => {
+    try {
+      await Exam.findByIdAndUpdate(req.params.id, { $set: req.body }); //$push $set use toupdate the 
+      return res.status(200).json({message:"updated"})   
+      } catch (err) {
+        console.log(err);
+   }
+  }
+  );
+
+  
+  router.delete("/admindashboard/examdelete/:id",async (req,res)=>{
+    try {
+        await Exam.findByIdAndRemove(req.params.id);
+          return res.status(200).json({message:"deleted"});    
+      
+    } catch (err) {
+          console.log(err);    
+    }
+  })
+
 
   export default router;
