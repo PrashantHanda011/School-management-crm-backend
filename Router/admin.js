@@ -1,16 +1,16 @@
 import express from "express";
 import "../db/conn.js";
-import Admin from "../schema/adminschema.js";
+import Admin from "../schema/Admin schema/adminschema.js";
 import Bcrypt from 'bcryptjs'
-import User from "../schema/studentschema.js";
-import Subject from "../schema/subjectschema.js";
-import Teacher from "../schema/teacherschema.js";
-import Class from "../schema/classschema.js";
-import Expense from "../schema/expenseschema.js";
-import Holiday from "../schema/holidayschema.js";
-import Fee from "../schema/feeschema.js";
-import Library from "../schema/libraryschema.js";
-import Exam from "../schema/examschema.js";
+import User from '../schema/Admin schema/studentschema.js'
+import Subject from "../schema/Admin schema/subjectschema.js";
+import Teacher from "../schema/Admin schema/teacherschema.js";
+import Class from "../schema/Admin schema/classschema.js";
+import Expense from "../schema/Admin schema/expenseschema.js";
+import Holiday from "../schema/Admin schema/holidayschema.js";
+import Fee from "../schema/Admin schema/feeschema.js";
+import Library from "../schema/Admin schema/libraryschema.js";
+import Exam from "../schema/Admin schema/examschema.js";
 const router = express.Router();
 
 //Admin Signup

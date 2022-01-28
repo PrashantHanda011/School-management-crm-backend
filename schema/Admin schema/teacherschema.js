@@ -9,7 +9,7 @@ const teacherschema = new mongoose.Schema({
       type: String,
       required: true,
     },
-    subject:{
+    subjects:{
         type:String
     },
     Class:{

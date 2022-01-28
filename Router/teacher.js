@@ -1,8 +1,8 @@
 import express from "express";
 import "../db/conn.js";
-import Teacher from "../schema/teacherschema.js";
+import Teacher from "../schema/Admin schema/teacherschema.js";
 import Bcrypt from "bcryptjs";
-import User from '../schema/studentschema.js'
+import User from '../schema/Admin schema/studentschema.js'
 
 const router = express.Router();
 
