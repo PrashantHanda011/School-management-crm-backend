@@ -11,6 +11,7 @@ import Holiday from "../schema/Admin schema/holidayschema.js";
 import Fee from "../schema/Admin schema/feeschema.js";
 import Library from "../schema/Admin schema/libraryschema.js";
 import Exam from "../schema/Admin schema/examschema.js";
+import Transport from "../schema/Admin schema/transportschema.js"
 const router = express.Router();
 
 //Admin Signup
@@ -616,6 +617,73 @@ router.get("/admindashboard/account/expensecollection", async (req, res) => {
           console.log(err);    
     }
   })
+
+
+
+// Transport
+
+router.post("/admindashboard/transportadd", async (req, res) => {
+  const {driverid,route,vehiclenumber, drivername,driverlicensenumber,driverphonenumber, driveraddress} = req.body;
+  
+  if (!driverid || !vehiclenumber || !driverlicensenumber|| !driverphonenumber ){
+    return res.status(422).json({ error: "fill the details" });
+  }
+  try {
+    const transportExist = await Transport.findOne({ driverid : driverid });
+    if (transportExist) {
+      return res.status(423).json({ message: "Person already exist" });
+    } else {
+      const transport = new Transport({
+        driverid,route,vehiclenumber, drivername,driverlicensenumber,driverphonenumber, driveraddress
+       });
+
+      await transport.save();
+      return res.status(200).json({ message: "transport Added successfully " });
+    }
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+router.get("/admindashboard/transportlist", async (req, res) => {
+  try {
+    const data = await Transport.find();
+    res.send(data) ;
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+
+router.get('/admindashboard/transportedit/:id',async(req,res)=>{
+  try{
+  const data = await Transport.findById(req.params.id);
+  res.send(data);
+  }catch(err){
+    console.log(err)
+  }
+})
+
+router.put("/admindashboard/transportedit/:id", async (req, res) => {
+  try {
+    await Transport.findByIdAndUpdate(req.params.id, { $set: req.body }); //$push $set use toupdate the 
+    return res.status(200).json({message:"updated"})   
+    } catch (err) {
+      console.log(err);
+ }
+}
+);
+
+
+router.delete("/admindashboard/transportdelete/:id",async (req,res)=>{
+  try {
+      await Transport.findByIdAndRemove(req.params.id);
+        return res.status(200).json({message:"deleted"});    
+    
+  } catch (err) {
+        console.log(err);    
+  }
+})
 
 
   export default router;
