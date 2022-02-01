@@ -12,6 +12,9 @@ const subjectschema = new mongoose.Schema({
     Class: {
       type: String,
     },
+    section: {
+      type: String,
+    },
     })
       
   const Subject = mongoose.model("SUBJECT", subjectschema);

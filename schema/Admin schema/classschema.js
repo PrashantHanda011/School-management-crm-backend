@@ -1,4 +1,13 @@
 import mongoose from "mongoose";
+const childsubschema = new mongoose.Schema({
+  subjectid: {
+    type: String
+  },
+  subjectname: {
+    type: String
+  }
+})
+
 
 const classschema = new mongoose.Schema({
     classid: {
@@ -18,9 +27,14 @@ const classschema = new mongoose.Schema({
     },
     noofstudent: {
       type: Number
-    }
+    },
+    subjects:[childsubschema]
+    
 })
-      
+//this.subjects = this.subjects.concat({subject:newsubject})  
+
+
+
   const Class = mongoose.model("CLASS", classschema);
   export default Class;
   

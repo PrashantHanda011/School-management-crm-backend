@@ -85,7 +85,7 @@ router.post("/adminlogin", async (req, res) => {
   //subject add
   
   router.post("/subjectadd", async (req, res) => {
-    const { subid, subname, Class } = req.body;
+    const { subid, subname, Class,section } = req.body;
     if (!subid || !subname ) {
       return res.status(422).json({ error: "fill the details" });
     }
@@ -97,8 +97,8 @@ router.post("/adminlogin", async (req, res) => {
         const subject = new Subject({
           subid,
           subname,
-          
-          Class
+          Class,
+          section
          });
   
         await subject.save();
@@ -310,6 +310,19 @@ router.get("/admindashboard/account/expensecollection", async (req, res) => {
       console.log(err);
     }
   });
+
+  
+  router.post("/admindashboard/class/subjectadd/:id", async (req, res) => {
+    try {
+      const data = await Class.findByIdAndUpdate(req.params.id,{$addToSet: {subjects:req.body } });
+
+      return res.status(200).json({message:"updated"});
+      } catch (err) {
+        console.log(err);
+   }
+  });
+
+
 
   router.get("/admindashboard/classes", async (req, res) => {
     try {

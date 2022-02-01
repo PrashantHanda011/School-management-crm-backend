@@ -2,7 +2,7 @@ import express from "express";
 import "../db/conn.js";
 import Bcrypt from "bcryptjs";
 import User from '../schema/Admin schema/studentschema.js'
-
+import ClassSchema from "../schema/Admin schema/classschema.js";
 const router = express.Router();
 
 router.post("/studentadd", async (req, res) => {
@@ -125,6 +125,24 @@ router.delete("/studentdelete/:id",async (req,res)=>{
   }
 })
 
+
+
+
+router.post("/studentdashboard/subjectlist",async (req,res)=>{
+  const { Class,section}=req.body;
+  try{
+    const exist = await ClassSchema.findOne({classn:Class,section:section});
+    if(exist){
+      console.log(exist);  
+      return res.status(200).json({message:"found",data:exist})
+    }else{
+      return res.status(201).json({message:"not found"})
+    }
+  }catch(err){
+    console.log(err);
+  }
+}
+)
 
 
 export default router;
