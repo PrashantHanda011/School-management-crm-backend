@@ -322,6 +322,15 @@ router.get("/admindashboard/account/expensecollection", async (req, res) => {
    }
   });
 
+  router.delete("/admindashboard/class/subjectdelete/:id1/:id2", async (req, res) => {
+    try {
+     await Class.findByIdAndUpdate(req.params.id1,{$pull: {"subjects": {"_id" : req.params.id2} } });      
+    return res.status(200).json({message:"updated"});
+      } catch (err) {
+        console.log(err);
+   }
+  });
+
 
 
   router.get("/admindashboard/classes", async (req, res) => {
@@ -345,6 +354,16 @@ router.get("/admindashboard/account/expensecollection", async (req, res) => {
 
 
   router.get('/admindashboard/classes/classedit/:id',async(req,res)=>{
+    try{
+    const data = await Class.findById(req.params.id);
+  
+    res.send(data);
+    }catch(err){
+      console.log(err)
+    }
+  })
+  
+  router.get('/admindashboard/class/subjectlist/:id',async(req,res)=>{
     try{
     const data = await Class.findById(req.params.id);
   
