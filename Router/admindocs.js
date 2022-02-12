@@ -69,12 +69,16 @@ router.post("/admindashboard/timetableadd",upload.single('timetabledocs'), async
   
   router.put("/admindashboard/timetableedit/:id",upload.single('timetabledocs'), async (req, res) => {
     const {Class,section}=req.body;
-    const ttdocs = req.file.filename ;
     
-    console.log(ttdocs);
-    const updates = {Class,section,ttdocs};
+    const updates = {Class,section};
+   
+    if (req.file) {
+      const timetabledocs = req.file.filename;
+      updates.timetabledocs = timetabledocs;
+  }
+
     try {
-      await Timetable.findOneAndUpdate(req.params.id, {
+      await Timetable.findByIdAndUpdate(req.params.id, {
         $set: updates
       }, {
         new: true
@@ -85,7 +89,15 @@ router.post("/admindashboard/timetableadd",upload.single('timetabledocs'), async
    }
   }
   );
-  
+  router.delete("/admindashboard/timetableedit/:id",async (req,res)=>{
+    try {
+        await Timetable.findByIdAndRemove(req.params.id);
+          return res.status(200).json({message:"deleted"});    
+      
+    } catch (err) {
+          console.log(err);    
+    }
+  })
 
 
 
@@ -125,6 +137,48 @@ router.post("/admindashboard/syllabusadd",upload.single('syllabusdocs'), async (
     }
   });
 
+  router.get('/admindashboard/syllabusedit/:id',async(req,res)=>{
+    try{
+    const data = await Syllabus.findById(req.params.id);
+  
+    res.send(data);
+    }catch(err){
+      console.log(err)
+    }
+  })
+  
+  router.put("/admindashboard/syllabusedit/:id",upload.single('syllabusdocs'), async (req, res) => {
+    const {Class,section}=req.body;
+    
+    const updates = {Class,section};
+   
+    if (req.file) {
+      const syllabusdocs = req.file.filename;
+      updates.syllabusdocs = syllabusdocs;
+  }
+
+    try {
+      await Syllabus.findByIdAndUpdate(req.params.id, {
+        $set: updates
+      }, {
+        new: true
+      })
+      return res.status(200).json({message:"updated"})   
+      } catch (err) {
+        console.log(err);
+   }
+  }
+  );
+
+  router.delete("/admindashboard/syllabusedit/:id",async (req,res)=>{
+    try {
+          await Syllabus.findByIdAndRemove(req.params.id);
+          return res.status(200).json({message:"deleted"});    
+      
+    } catch (err) {
+          console.log(err);    
+    }
+  })
 
 
 

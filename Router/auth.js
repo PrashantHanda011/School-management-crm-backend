@@ -6,6 +6,7 @@ import ClassSchema from "../schema/Admin schema/classschema.js";
 import Exam from "../schema/Admin schema/examschema.js";
 import Fee from "../schema/Admin schema/feeschema.js";
 import Timetable from "../schema/Admin schema/Timetableschema.js";
+import Syllabus from '../schema/Admin schema/syllabusschema.js'
 const router = express.Router();
 
 router.post("/studentadd", async (req, res) => {
@@ -200,6 +201,21 @@ router.post("/studentdashboard/timetable",async (req,res)=>{
   const { Class,section}=req.body;
   try{
     const exist = await Timetable.find({Class:Class,section:section});
+    if(exist){
+      return res.status(200).json({message:"found",exist})
+    }else{
+      return res.status(201).json({message:"not found"})
+    }
+  }catch(err){
+    console.log(err);
+  }
+}
+)
+
+router.post("/studentdashboard/syllabus",async (req,res)=>{
+  const { Class,section}=req.body;
+  try{
+    const exist = await Syllabus.find({Class:Class,section:section});
     if(exist){
       return res.status(200).json({message:"found",exist})
     }else{
