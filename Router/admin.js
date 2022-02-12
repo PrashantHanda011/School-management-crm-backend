@@ -12,6 +12,7 @@ import Fee from "../schema/Admin schema/feeschema.js";
 import Library from "../schema/Admin schema/libraryschema.js";
 import Exam from "../schema/Admin schema/examschema.js";
 import Transport from "../schema/Admin schema/transportschema.js"
+import Timetable from "../schema/Admin schema/Timetableschema.js";
 const router = express.Router();
 
 //Admin Signup
@@ -716,6 +717,7 @@ router.delete("/admindashboard/transportdelete/:id",async (req,res)=>{
         console.log(err);    
   }
 })
+
 
 
   export default router;

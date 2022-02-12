@@ -6,6 +6,9 @@ import database from './db/conn.js'
 import teacher from './Router/teacher.js'
 import cookieParser from 'cookie-parser';
 import admin from './Router/admin.js'
+import admindocs from './Router/admindocs.js'
+import ejs from 'ejs'
+import path from 'path'
 const app = express();
 
 //for encrypted file
@@ -15,7 +18,6 @@ app.use(cookieParser());
 
 const origins = "https://school-management-sinox.netlify.app"
 //const origins = "http://localhost:3000"
-
 app.use(cors({origin: origins,
   credentials: true}))
 
@@ -36,7 +38,11 @@ app.use(express.json());
 app.use(admin)
 app.use(auth)
 app.use(teacher)
+//for images
 
+app.use(admindocs)
+app.use(express.static( 'public'))
+app.set('view engine ','ejs')
 //listen
 app.listen(PORT,()=>{
     console.log(`listening to port ${PORT}`)

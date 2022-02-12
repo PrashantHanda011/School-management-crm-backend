@@ -9,7 +9,7 @@ const teacherschema = new mongoose.Schema({
       type: String,
       required: true,
     },
-    subjects:{
+    subject:{
         type:String
     },
     Class:{
@@ -26,6 +26,7 @@ const teacherschema = new mongoose.Schema({
     },
     joiningdate: {
       type: String,
+      
     },
     qualification: {
       type: String,
@@ -52,7 +53,7 @@ const teacherschema = new mongoose.Schema({
       type: Number
     },
     salarydate:{
-      type:Date
+      type:String
     },
     salarystatus: {
       type: Boolean

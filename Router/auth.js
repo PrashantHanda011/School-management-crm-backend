@@ -5,6 +5,7 @@ import User from '../schema/Admin schema/studentschema.js'
 import ClassSchema from "../schema/Admin schema/classschema.js";
 import Exam from "../schema/Admin schema/examschema.js";
 import Fee from "../schema/Admin schema/feeschema.js";
+import Timetable from "../schema/Admin schema/Timetableschema.js";
 const router = express.Router();
 
 router.post("/studentadd", async (req, res) => {
@@ -167,7 +168,7 @@ router.post("/studentdashboard/feelist",async (req,res)=>{
     const exist = await Fee.find({Class:Class});
     if(exist){
   
-      return res.status(200).json({message:"found",data:exist})
+      return res.status(200).json({message:"found",exist})
     }else{
       return res.status(201).json({message:"not found"})
     }
@@ -177,5 +178,37 @@ router.post("/studentdashboard/feelist",async (req,res)=>{
 }
 )
 
+router.post("/studentdashboard/feelist/student",async (req,res)=>{
+  const { sid}=req.body;
+  try{
+    const exist = await User.findOne({sid:sid});
+    if(exist){
+  
+
+      return res.status(200).json({message:"found",exist})
+    }else{
+      return res.status(201).json({message:"not found"})
+    }
+  }catch(err){
+    console.log(err);
+  }
+}
+)
+
+
+router.post("/studentdashboard/timetable",async (req,res)=>{
+  const { Class,section}=req.body;
+  try{
+    const exist = await Timetable.find({Class:Class,section:section});
+    if(exist){
+      return res.status(200).json({message:"found",exist})
+    }else{
+      return res.status(201).json({message:"not found"})
+    }
+  }catch(err){
+    console.log(err);
+  }
+}
+)
 
 export default router;
