@@ -7,7 +7,7 @@ import User from '../schema/Admin schema/studentschema.js'
 const router = express.Router();
 
 
-router.post("/teacherdashboard/login", async (req, res) => {
+router.post("/teacherlogin", async (req, res) => {
     const { email, password } = req.body;
     
     if (!email || !password) {

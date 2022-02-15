@@ -62,7 +62,7 @@ router.post("/studentadd", async (req, res) => {
 
 //login route
 
-router.post("/login", async (req, res) => {
+router.post("/studentlogin", async (req, res) => {
   const { email, password } = req.body;
   
   if (!email || !password) {

@@ -2,6 +2,7 @@ import express from "express";
 import "../db/conn.js";
 import Timetable from '../schema/Admin schema/Timetableschema.js'
 import Syllabus from "../schema/Admin schema/syllabusschema.js";
+import Assignment from "../schema/Admin schema/assignmentschema.js";
 import multer from "multer";
 import path from 'path'
 const router = express.Router();
@@ -13,6 +14,9 @@ const storage = multer.diskStorage({
             cb(null, './public/timetable/'); 
         }else if(file.fieldname === "syllabusdocs"){
             cb(null, './public/syllabus/'); 
+          }else if(file.fieldname === "assignmentdocs"){
+          cb(null, './public/assignment/'); 
+
         }
     },
     filename: function(req, file, cb) {   
@@ -182,4 +186,41 @@ router.post("/admindashboard/syllabusadd",upload.single('syllabusdocs'), async (
 
 
 
-export default router;``
+// Teacher
+
+
+router.post("/teacherdashboard/assignmentadd",upload.single('assignmentdocs'), async (req, res) => {
+  const {Class,section,tname} = req.body;
+  if (!Class || !section  ){
+      return res.status(422).json({ error: "fill the details" });
+  }
+
+  const assignmentdocs = req.file.filename;
+
+  try {
+    const AssignmentExist = await Assignment.findOne({ Class : Class,section:section });
+    if (AssignmentExist) {
+      return res.status(423).json({ message: " already exist" });
+    } else {
+      const assignment = new Assignment({
+        Class,section,assignmentdocs,tname
+       });
+       
+      await assignment.save();
+      return res.status(200).json({ message: " Added successfully " });
+    }
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+router.get("/teacherdashboard/assignmentlist", async (req, res) => {
+  try {
+    const data = await Assignment.find();
+    res.send(data) ;
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+export default router;
