@@ -85,30 +85,6 @@ router.post("/adminlogin", async (req, res) => {
 
   //subject add
   
-  router.post("/subjectadd", async (req, res) => {
-    const { subid, subname, Class,section } = req.body;
-    if (!subid || !subname ) {
-      return res.status(422).json({ error: "fill the details" });
-    }
-    try {
-      const userExist = await Subject.findOne({ subid : subid });
-      if (userExist) {
-        return res.status(423).json({ message: "Subject exist" });
-      } else {
-        const subject = new Subject({
-          subid,
-          subname,
-          Class,
-          section
-         });
-  
-        await subject.save();
-        return res.status(200).json({ message: "Subject Added successfully " });
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  });
 
   router.get("/subjectlist", async (req, res) => {
     try {
@@ -155,59 +131,7 @@ router.post("/adminlogin", async (req, res) => {
 //Teacher 
 
 
-router.post("/admindashboard/teacheradd", async (req, res) => {
-    const { tid, tname,subject, gender, dob , mobile , joiningdate , qualification , experience , email , password , cpassword,Class , address ,salary,salarydate , salarystatus } = req.body;
 
-    if ( !email|| !tid || !password || !cpassword || !mobile || !tname) {
-      return res.status(422).json({ error: "fill the details" });
-    }
-    try {
-      const userExist = await Teacher.findOne({ email: email });
-      if (userExist) {
-        return res.status(423).json({ message: "user exist" });
-      } else if (password != cpassword) {
-        return res.status(424).json({ message: "Password didn't matched " });
-      } else {
-        const teacher = new Teacher({
-          tid, tname,subject, gender, dob , mobile , joiningdate , qualification , experience , email , password , cpassword , address , Class,salary ,salarydate, salarystatus
-         });
-  
-        await teacher.save();
-        return res.status(200).json({ message: "succefull registered" });
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  });
-  
-  router.get("/admindashboard/teacherslist", async (req, res) => {
-    try {
-      const data = await Teacher.find();
-      res.send(data) ;
-    } catch (err) {
-      console.log(err);
-    }
-  });
-
-  router.get('/admindashboard/teacheredit/:id',async(req,res)=>{
-    try{
-    const data = await Teacher.findById(req.params.id);
-  
-    res.send(data);
-    }catch(err){
-      console.log(err)
-    }
-  })
-
-  router.put("/admindashboard/teacheredit/:id", async (req, res) => {
-    try {
-      await Teacher.findByIdAndUpdate(req.params.id, { $set: req.body }); //$push $set use toupdate the 
-      return res.status(200).json({message:"updated"})   
-      } catch (err) {
-        console.log(err);
-   }
-  }
-  );
 
   router.delete("/admindashboard/teacherdelete/:id",async (req,res)=>{
     try {

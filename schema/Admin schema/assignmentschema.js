@@ -12,6 +12,10 @@ const assignmentschema = new mongoose.Schema({
     tname: {
       type: String,
     },
+    subject: {
+      type: String,
+      required:true
+    },
     assignmentdocs: {
       type: String
     }

@@ -6,59 +6,10 @@ import ClassSchema from "../schema/Admin schema/classschema.js";
 import Exam from "../schema/Admin schema/examschema.js";
 import Fee from "../schema/Admin schema/feeschema.js";
 import Timetable from "../schema/Admin schema/Timetableschema.js";
+import Assignment from "../schema/Admin schema/assignmentschema.js";
 import Syllabus from '../schema/Admin schema/syllabusschema.js'
 const router = express.Router();
 
-router.post("/studentadd", async (req, res) => {
-  const {fname,lname,sid,email,password,cpassword,gender,dob,Class,religion,admissiondate,phone,admissionnum,section,simg,fathername,fatheroccupation,fatherphone,fatheremail,mothername,motheroccupation,motherphone,motheremail,address,totalamount,submitamount,feedate,feestatus} = req.body;
-  if (!fname || !lname ||!sid ||!email ||!password ||!cpassword ||!gender ||!dob ||!Class ||!admissiondate ||!phone ||!admissionnum ||!section ||!fathername ) {
-    return res.status(422).json({ error: "fill the details" });
-  }
-  try {
-    const userExist = await User.findOne({ email: email });
-    if (userExist) {
-      return res.status(423).json({ message: "user exist" });
-    } else if (password != cpassword) {
-      return res.status(424).json({ message: "Password didn't matched " });
-    } else {
-      const user = new User({
-        fname,
-        lname,
-        sid,
-        email,
-        password,
-        cpassword,
-        gender,
-        dob,
-        Class,
-        religion,
-        admissiondate,
-        phone,
-        admissionnum,
-        section,
-        simg,
-        fathername,
-        fatheroccupation,
-        fatherphone,
-        fatheremail,
-        mothername,
-        motheroccupation,
-        motherphone,
-        motheremail,
-        address,
-        totalamount,
-        submitamount,
-        feedate,
-        feestatus
-      });
-
-    await user.save();   
-      return res.status(200).json({ message: "succefull registered" });
-    }
-  } catch (err) {
-    console.log(err);
-  }
-});
 
 //login route
 
@@ -100,15 +51,6 @@ router.get("/studentlist", async (req, res) => {
 
 //admin dashboard 
 
-router.get('/studentedit/:id',async(req,res)=>{
-  try{
-  const data = await User.findById(req.params.id);
-
-  res.send(data);
-  }catch(err){
-    console.log(err)
-  }
-})
 
  router.put("/studentedit/:id", async (req, res) => {
   try {
@@ -216,6 +158,21 @@ router.post("/studentdashboard/syllabus",async (req,res)=>{
   const { Class,section}=req.body;
   try{
     const exist = await Syllabus.find({Class:Class,section:section});
+    if(exist){
+      return res.status(200).json({message:"found",exist})
+    }else{
+      return res.status(201).json({message:"not found"})
+    }
+  }catch(err){
+    console.log(err);
+  }
+}
+)
+
+router.post("/teacherdashboard/assignment",async (req,res)=>{
+  const { Class,section}=req.body;
+  try{
+    const exist = await Assignment.find({Class:Class,section:section});
     if(exist){
       return res.status(200).json({message:"found",exist})
     }else{

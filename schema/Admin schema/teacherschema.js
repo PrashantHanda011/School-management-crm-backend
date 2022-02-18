@@ -1,15 +1,30 @@
 import mongoose from "mongoose";
 import bcrypt from 'bcryptjs'
+
+const childsubschema = new mongoose.Schema({
+  subjectid: {
+    type: String
+  },
+  subjectname: {
+    type: String
+  }
+})
+
 const teacherschema = new mongoose.Schema({
     tid:{
         type:String,
         required:true
     },
+    timg:{
+        type:String,
+    },
     tname: {
       type: String,
       required: true,
     },
-    subject:{
+    subjects:[childsubschema]
+    ,
+    section:{
         type:String
     },
     Class:{
@@ -22,7 +37,7 @@ const teacherschema = new mongoose.Schema({
       type: String,
     },
     mobile: {
-      type: Number,
+      type: String,
     },
     joiningdate: {
       type: String,

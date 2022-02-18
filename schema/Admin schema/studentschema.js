@@ -31,7 +31,7 @@ const postschema = new mongoose.Schema({
     required: true,
   },
   dob: {
-    type: Date,
+    type: String,
     required: true,
   },
   Class: {
@@ -43,12 +43,10 @@ const postschema = new mongoose.Schema({
     required: true,
   },
   admissiondate: {
-    type: Date,
-    required: true,
+    type: String,
   },
   phone: {
-    type: Number,
-    required: true,
+    type: String,
   },
   admissionnum: {
     type: String,
@@ -70,8 +68,7 @@ const postschema = new mongoose.Schema({
     
   },
   fatherphone: {
-    type: Number,
-    
+    type: String,
   },
   fatheremail: {
     type: String,
@@ -79,23 +76,19 @@ const postschema = new mongoose.Schema({
   },
   mothername: {
     type: String,
-    required: true,
   },
   motheroccupation: {
     type: String,
     
   },
   motherphone: {
-    type: Number,
-   
+    type: String,   
   },
   motheremail: {
     type: String,
-    
   },
   address:{
     type:String,
-    required:true
   },
   totalamount:{
     type:Number
@@ -104,7 +97,7 @@ const postschema = new mongoose.Schema({
     type:Number
   },
   feedate:{
-    type:Date
+    type:String
   },
   feestatus:{
     type:Boolean,
