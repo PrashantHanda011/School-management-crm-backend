@@ -109,4 +109,24 @@ router.post("/teacherlogin", async (req, res) => {
   });
 
 
+
+
+  // Attendence
+
+
+  router.post('/teacherdashboard/attendence/studentlist',async(req,res)=>{
+    const { Class,section} = req.body;
+    try{
+      const exist = await User.find({Class:Class,section:section});
+      if(exist){
+        return res.status(200).json({message:"found",exist})
+      }else{
+        return res.status(201).json({message:"not found"})
+      }
+    }catch(err){
+      console.log(err)
+    }
+  })
+
+
   export default router;

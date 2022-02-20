@@ -142,14 +142,22 @@ router.post("/adminlogin", async (req, res) => {
           console.log(err);    
     }
   })
-
-  router.put("/admindashboard/account/addfees", async (req, res) => {
+  
+  router.get("/admindashboard/account/addfees/:id",async (req,res)=>{
     try {
-      const {sid}=req.body;
-      const match= await User.findOneAndUpdate({sid:sid},{ $set: req.body })
-      if(!match){
-        return res.status(201).json({message:"student doesn't exist"})    
-      }
+        const respo = await User.findById(req.params.id);
+        
+        const respo2 = await Fee.findOne({Class:respo.Class})    
+      return res.status(200).json({message:"deleted",respo2});    
+      
+    } catch (err) {
+          console.log(err);    
+    }
+  })
+
+  router.put("/admindashboard/account/addfees/:id", async (req, res) => {
+    try {
+      const match= await User.findByIdAndUpdate(req.params.id,{ $set: req.body })
       return res.status(200).json({message:"updated"})    
 
       } catch (err) {

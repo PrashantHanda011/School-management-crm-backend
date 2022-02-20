@@ -7,8 +7,7 @@ import teacher from './Router/teacher.js'
 import cookieParser from 'cookie-parser';
 import admin from './Router/admin.js'
 import admindocs from './Router/admindocs.js'
-import ejs from 'ejs'
-import path from 'path'
+
 const app = express();
 
 //for encrypted file

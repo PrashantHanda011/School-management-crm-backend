@@ -1,6 +1,17 @@
 import mongoose from "mongoose";
 import bcrypt from 'bcryptjs'
 import  Jwt  from "jsonwebtoken";
+
+const childattendschema = new mongoose.Schema({
+  attendencedate: {
+    type: String
+  },
+  attendencestatus: {
+    type: String
+  }
+})
+
+
 const postschema = new mongoose.Schema({
   fname: {
     type: String,
@@ -103,7 +114,9 @@ const postschema = new mongoose.Schema({
     type:Boolean,
     default:false
 
-  }
+  },
+  attendencelist:[childattendschema]
+    
 });
 
 //pasword hash
