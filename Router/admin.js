@@ -400,8 +400,11 @@ router.get("/admindashboard/account/expensecollection", async (req, res) => {
         const fee = new Fee({
           feeid, feetype, Class , feeamt ,  feesdate,feeedate
          });
+
+         
   
         await fee.save();
+
         return res.status(200).json({ message: "Fee Added successfully " });
       }
     } catch (err) {

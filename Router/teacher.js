@@ -128,5 +128,52 @@ router.post("/teacherlogin", async (req, res) => {
     }
   })
 
+  router.post("/teacherdashboard/changepassword/:id", async (req, res) => {
+    const { oldpassword, password, cpassword } = req.body;
+  
+    if (!oldpassword) {
+      return res.status(423).json({ alert: "please fill " });
+    }
+    try {
+      const exist = await Teacher.findById(req.params.id);
+      if (exist) {
+        const match = Bcrypt.compareSync(oldpassword, exist.password);
+        if (match) {
+          if (password != cpassword) {
+            return res.status(425).json({ status: "password not match" });
+          } else {
+                const salt = Bcrypt.genSaltSync(12);
+                  const hash = Bcrypt.hashSync(password, salt);
+                   await Teacher.findOneAndUpdate({_id:req.params.id},{ $set: {password:hash}},{new: true})
+            
+              return res.status(200).json({ status: "success" });
+          } 
+        }
+        
+        else {
+          return res.status(422).json({ message: "invalid credentials" });
+        }
+      } else {
+        return res.status(422).json({ alert: "login error" });
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  });
+
+  router.post('/teacherdashboard/studentlist',async(req,res)=>{
+    const { Class,section} = req.body;
+    try{
+      const exist = await User.find({Class:Class,section:section});
+      if(exist){
+        return res.status(200).json({message:"found",exist})
+      }else{
+        return res.status(201).json({message:"not found"})
+      }
+    }catch(err){
+      console.log(err)
+    }
+  })
+
 
   export default router;

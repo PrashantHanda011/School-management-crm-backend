@@ -130,6 +130,15 @@ postschema.pre('save', async function(next){
   next();
 });
 
+// postschema.pre('updateOne', async function(next){
+
+//   if(this.isModified('password') ){
+//     var salt = bcrypt.genSaltSync(12)
+//     this.password = bcrypt.hashSync(this.password,salt);
+//   }
+//   next();
+// });
+
 //jwt token
 
 postschema.methods.generateAuthToken = async function(){
