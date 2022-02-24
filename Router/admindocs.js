@@ -180,7 +180,7 @@ router.post("/admindashboard/syllabusadd",upload.single('syllabusdocs'), async (
   }
   );
 
-  router.delete("/admindashboard/syllabusedit/:id",async (req,res)=>{
+  router.delete("/admindashboard/syllabusedit/delete/:id",async (req,res)=>{
     try {
           await Syllabus.findByIdAndRemove(req.params.id);
           return res.status(200).json({message:"deleted"});    

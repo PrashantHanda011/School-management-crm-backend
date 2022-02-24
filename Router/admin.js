@@ -166,6 +166,21 @@ router.post("/adminlogin", async (req, res) => {
   }
   );
 
+  router.put("/admindashboard/account/addfee", async (req, res) => {
+    try {
+      const {sid}=req.body;
+      const match= await User.findOneAndUpdate({sid:sid},{ $set: req.body })
+      if(!match){
+        return res.status(201).json({message:"Teacher doesn't exist"})    
+      }
+      return res.status(200).json({message:"updated"})    
+
+      } catch (err) {
+        console.log(err);
+   }
+  }
+  );
+
   router.put("/admindashboard/account/addsalary", async (req, res) => {
     try {
       const {tid}=req.body;
@@ -653,6 +668,38 @@ router.delete("/admindashboard/transportdelete/:id",async (req,res)=>{
   }
 })
 
+router.post("/admindashboard/changepassword/:id", async (req, res) => {
+  const { oldpassword, password, cpassword } = req.body;
+
+  if (!oldpassword) {
+    return res.status(423).json({ alert: "please fill " });
+  }
+  try {
+    const exist = await Admin.findById(req.params.id);
+    if (exist) {
+      const match = Bcrypt.compareSync(oldpassword, exist.password);
+      if (match) {
+        if (password != cpassword) {
+          return res.status(425).json({ status: "password not match" });
+        } else {
+              const salt = Bcrypt.genSaltSync(12);
+                const hash = Bcrypt.hashSync(password, salt);
+             await Admin.findOneAndUpdate({_id:req.params.id},{ $set: {password:hash}},{new: true})
+          
+            return res.status(200).json({ status: "success" });
+        } 
+      }
+      
+      else {
+        return res.status(422).json({ message: "invalid credentials" });
+      }
+    } else {
+      return res.status(422).json({ alert: "login error" });
+    }
+  } catch (err) {
+    console.log(err);
+  }
+});
 
 
   export default router;
