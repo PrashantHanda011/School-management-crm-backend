@@ -18,6 +18,7 @@ app.use(cookieParser());
 const origins = "https://school-management-sinox.netlify.app"
 
 //const origins = "http://localhost:3000"
+
 app.use(cors({origin: origins,
   credentials: true}))
 

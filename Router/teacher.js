@@ -1,6 +1,7 @@
 import express from "express";
 import "../db/conn.js";
 import Class from "../schema/Admin schema/classschema.js";
+import Syllabus from "../schema/Admin schema/syllabusschema.js";
 import Teacher from "../schema/Admin schema/teacherschema.js";
 import Timetable from "../schema/Admin schema/Timetableschema.js";
 import Bcrypt from "bcryptjs";
@@ -174,6 +175,21 @@ router.post("/teacherlogin", async (req, res) => {
       console.log(err)
     }
   })
+
+  
+router.post("/teacherdashboard/syllabus", async (req, res) => {
+  const { Class, section } = req.body;
+  try {
+    const exist = await Syllabus.find({ Class: Class, section: section });
+    if (exist) {
+      return res.status(200).json({ message: "found", exist });
+    } else {
+      return res.status(201).json({ message: "not found" });
+    }
+  } catch (err) {
+    console.log(err);
+  }
+});
 
 
   export default router;

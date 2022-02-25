@@ -340,7 +340,60 @@ router.put("/admindashboard/studentedit/:id",upload.single('simg'), async (req, 
 );
 
 
+
+
+
+// profile
+
+router.get('/studentdashboard/profile/edit/:id',async(req,res)=>{
+  try{
+  const data = await User.findById(req.params.id);
+
+  res.send(data);
+  }catch(err){
+    console.log(err)
+  }
+})
+
+
+router.post('/studentdashboard/profile',async(req,res)=>{
+  const {id}=req.body
+  try{
+  const data = await User.findOne({_id:id});
+  res.send(data);
+  }catch(err){
+    console.log(err)
+  }
+})
+
+
+router.put("/studentdashboard/profile/edit/:id",upload.single('simg'), async (req, res) => {
+
+  const {fname,lname,religion,fathername,fatheroccupation,fatheremail,mothername,motheroccupation,motheremail,address,phone,motherphone,fatherphone,} = req.body;
+
+
+  const updates = {fname,lname,phone,motherphone,fatherphone,religion,fathername,fatheroccupation,fatheremail,mothername,motheroccupation,motheremail,address};
+
+  if (req.file) {
+    const simg = req.file.filename;
+    updates.simg = simg;
+}
+
+  try {
+    await User.findByIdAndUpdate(req.params.id, {
+      $set: updates
+    }, {
+      new: true
+    })
+    return res.status(200).json({message:"updated"})   
+    } catch (err) {
+      console.log(err);
+ }
+}
+);
+
 //Teacher
+
 
 
 router.post("/admindashboard/teacheradd",upload.single('timg'), async (req, res) => {
@@ -422,6 +475,42 @@ router.put("/admindashboard/teacheredit/:id",upload.single('timg'), async (req, 
  }
 }
 );
+
+router.put("/teacherdashboard/profile/edit/:id",upload.single('timg'), async (req, res) => {
+  const {  tname, mobile , joiningdate , qualification , experience , address  } = req.body;
+
+  console.log(req.body);
+  const updates = {  tname,mobile , joiningdate , qualification , experience , address  }
+
+
+  if (req.file) {
+    const timg = req.file.filename;
+    updates.timg = timg;
+
+  }
+
+  try {
+    await Teacher.findByIdAndUpdate(req.params.id, { $set: req.body }, {
+      new: true
+    }); //$push $set use toupdate the 
+    
+    return res.status(200).json({message:"updated"})   
+    } catch (err) {
+      console.log(err);
+ }
+}
+);
+
+router.post('/teacherdashboard/profile',async(req,res)=>{
+  const {id}=req.body
+  try{
+  const data = await Teacher.findOne({_id:id});
+  res.send(data);
+  }catch(err){
+    console.log(err)
+  }
+})
+
 
 
 
