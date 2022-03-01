@@ -192,4 +192,38 @@ router.post("/teacherdashboard/syllabus", async (req, res) => {
 });
 
 
-  export default router;
+
+
+
+// attendence
+
+router.post("/teacherdashboard/attendence", async (req, res) => {
+let arr = req.body;
+  try {
+     arr.map(async(element)=>{     
+          const updates={attendencestatus:element.attends.attendencestatus,attendencedate:element.attends.attendencedate}
+          const exist = await User.findOne({sid:element.attends.sid })
+          console.log(exist);
+          if( exist){
+           exist.attendencelist.map((ele)=>{
+             if(ele.attendencedate === updates.attendencedate){
+                ele.attendencestatus = updates.attendencestatus
+                exist.save();
+                return res.status(425).json({message:"exist"})
+            }})
+          
+            exist.attendencelist.push(updates)
+            exist.save(); 
+          }
+
+     })
+    
+   return res.status(200).json({message:"updated"})   
+    } catch (err) {
+      console.log(err);
+ }
+}
+);
+
+
+export default router;

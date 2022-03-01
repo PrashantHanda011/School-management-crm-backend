@@ -2,6 +2,7 @@ import express from "express";
 import "../db/conn.js";
 import Admin from "../schema/Admin schema/adminschema.js";
 import Bcrypt from 'bcryptjs'
+import StarStudent from "../schema/Admin schema/starstudentschema.js";
 import User from '../schema/Admin schema/studentschema.js'
 import Subject from "../schema/Admin schema/subjectschema.js";
 import Teacher from "../schema/Admin schema/teacherschema.js";
@@ -701,5 +702,52 @@ router.post("/admindashboard/changepassword/:id", async (req, res) => {
   }
 });
 
+
+
+// Star Student
+
+
+router.post("/admindashboard/starstudent/studentadd", async (req, res) => {
+  const {sid,fname,lname,marksobtain,Class,totalmarks,percent,year} = req.body;
+  
+  if (!sid || !fname || !marksobtain || !totalmarks || !percent ){
+    return res.status(422).json({ error: "fill the details" });
+  }
+  try {
+    const starstudent = await StarStudent.findOne({ sid : sid });
+    if (starstudent) {
+      return res.status(423).json({ message: "book already exist" });
+    } else {
+      const star = new StarStudent({
+        sid,fname,lname,marksobtain,totalmarks,Class,percent,year
+       });
+
+      await star.save();
+      return res.status(200).json({ message: "book Added successfully " });
+    }
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+
+router.get('/admindashboard/starstudentlist',async(req,res)=>{
+  try{  const data = await StarStudent.find();
+  res.send(data);
+  }catch(err){
+    console.log(err)
+  }
+})
+
+
+router.delete("/admindashboard/starstudent/deletestudent/:id",async (req,res)=>{
+  try {
+      await StarStudent.findByIdAndRemove(req.params.id);
+        return res.status(200).json({message:"deleted"});    
+    
+  } catch (err) {
+        console.log(err);    
+  }
+})
 
   export default router;

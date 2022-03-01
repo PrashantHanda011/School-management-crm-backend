@@ -202,4 +202,26 @@ router.post("/studentdashboard/changepassword/:id", async (req, res) => {
   }
 });
 
+
+
+router.post("/studentdashboard/attendence", async (req, res) => {
+  const { id,dateval  } = req.body;
+  console.log(req.body);
+  try {
+      const exist = await User.findById({_id:id})
+      if(exist){
+        exist.attendencelist.map((ele)=>{
+          if(ele.attendencedate === dateval){
+            return res.status(200).json({message:"found",ele})
+          }else{
+            return res.status(417).json({message:"not found"})
+          }  
+        })
+      }
+    } catch (err) {
+    console.log(err);
+  }
+});
+
+
 export default router;
